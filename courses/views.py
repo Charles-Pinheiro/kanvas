@@ -1,10 +1,13 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from rest_framework import status
+from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import (api_view, authentication_classes,
                                        permission_classes)
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from users.models import User
 
 from courses.models import Course
@@ -13,43 +16,55 @@ from courses.serializers import (CoursePutNameSerializer,
                                  CoursePutUsersSerializer, CourseSerializer)
 
 
-@api_view(['POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated, InstructorPermission])
-def create_course(request):
+class CourseView(APIView):
 
-    data = request.data
-    try:
-        course = Course.objects.create(**data)
-    except IntegrityError:
-        return Response({'error': 'Course with this name already exists'}, status=status.HTTP_400_BAD_REQUEST)
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [InstructorPermission]
 
-    serialized = CourseSerializer(course)
+    def post(self, request):
+        data = request.data
 
-    return Response(serialized.data, status=status.HTTP_201_CREATED)
+        try:
+            course = Course.objects.create(**data)
+        except IntegrityError:
+            return Response({'error': 'Course with this name already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serialized = CourseSerializer(course)
+
+        return Response(serialized.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['PUT'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated, InstructorPermission])
-def update_name_course(request, course_id):
-    
-    data = request.data
-    serialized = CoursePutNameSerializer(data=data)
-    serialized.is_valid(raise_exception=True)
+    def get(self, request, course_id=''):
+        if course_id:
+            try:
+                course = Course.objects.get(id=course_id)
+                serialized = CourseSerializer(course)
+                return Response(serialized.data, status=status.HTTP_200_OK)
+            except ObjectDoesNotExist:
+                return Response({'errors': 'invalid course_id'}, status=status.HTTP_404_NOT_FOUND)
 
-    try:
-        course = Course.objects.get(id=course_id)
-    except Course.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        courses = Course.objects.all()
+        serialized = CourseSerializer(courses, many=True)
+        return Response(serialized.data, status=status.HTTP_200_OK)
 
-    name = data['name']
-    course.name = name
-    course.save()
 
-    serialized_return = CourseSerializer(course)
+    def put(self, request, course_id):
+        try:
+            course = Course.objects.get(id=course_id)
+        except Course.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(serialized_return.data, status=status.HTTP_200_OK)
+        data = request.data
+        serialized = CoursePutNameSerializer(data=data)
+        serialized.is_valid(raise_exception=True)
+
+        name = data['name']
+        course.name = name
+        course.save()
+
+        serialized_return = CourseSerializer(course)
+
+        return Response(serialized_return.data, status=status.HTTP_200_OK)
 
 
 @api_view(['PUT'])
