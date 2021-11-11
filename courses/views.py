@@ -5,7 +5,7 @@ from rest_framework import permissions
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import (api_view, authentication_classes,
                                        permission_classes)
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
@@ -65,6 +65,15 @@ class CourseView(APIView):
         serialized_return = CourseSerializer(course)
 
         return Response(serialized_return.data, status=status.HTTP_200_OK)
+
+
+    def delete(self, request, course_id):
+        try:
+            course = Course.objects.get(id=course_id)
+            course.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Course.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['PUT'])
