@@ -1,0 +1,411 @@
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Operations to perform:
+  Synchronize unmigrated apps: messages, rest_framework, staticfiles
+  Apply all migrations: activities, admin, auth, authtoken, contenttypes, courses, sessions, submissions, users
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying activities.0001_initial... OK
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying users.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying authtoken.0001_initial... OK
+  Applying authtoken.0002_auto_20160226_1747... OK
+  Applying authtoken.0003_tokenproxy... OK
+  Applying courses.0001_initial... OK
+  Applying courses.0002_course_users... OK
+  Applying sessions.0001_initial... OK
+  Applying submissions.0001_initial... OK
+  Applying submissions.0002_submission_user_id... OK
+  Applying submissions.0003_auto_20211112_1406... OK
+  Applying submissions.0004_alter_submission_grade... OK
+System check identified no issues (0 silenced).
+test_create_and_login_for_facilitator_account (test_api.TestAccountView) ... ok
+test_create_and_login_for_instructor_account (test_api.TestAccountView) ... ok
+test_create_and_login_for_student_account (test_api.TestAccountView) ... ok
+test_create_two_equals_users (test_api.TestAccountView) ... ok
+test_wrong_credentials_do_not_login (test_api.TestAccountView) ... ok
+test_facilitator_or_instructor_can_create_an_activity (test_api.TestActivityView) ... ok
+test_facilitator_or_instructor_can_edit_a_submission_grade (test_api.TestActivityView) ... ok
+test_facilitator_or_instructor_can_list_activities (test_api.TestActivityView) ... ok
+test_facilitator_or_instructor_can_update_an_activity (test_api.TestActivityView) ... ok
+test_facilitator_or_instructor_can_view_all_submissions (test_api.TestActivityView) ... ERROR
+test_facilitator_or_instructor_cannot_submity_an_activity (test_api.TestActivityView) ... ok
+test_if_it_is_not_possible_to_create_activities_with_the_same_title (test_api.TestActivityView) ... ok
+test_if_it_is_not_possible_to_update_activity_to_an_existing_title (test_api.TestActivityView) ... ERROR
+test_if_it_is_not_possible_to_update_activity_with_an_existing_submission (test_api.TestActivityView) ... ok
+test_student_can_submit_an_activity (test_api.TestActivityView) ... FAIL
+test_student_can_view_only_your_submissions (test_api.TestActivityView) ... ERROR
+test_student_cannot_edit_a_submission_grade (test_api.TestActivityView) ... ok
+test_student_cannot_list_activities (test_api.TestActivityView) ... ok
+test_students_cannot_create_activities (test_api.TestActivityView) ... ok
+test_anonymous_can_filter_courses (test_api.TestCourseView) ... ok
+test_anonymous_can_list_courses (test_api.TestCourseView) ... ok
+test_anonymous_cannot_filter_invalid_course (test_api.TestCourseView) ... ok
+test_cannot_create_courses_with_the_same_name (test_api.TestCourseView) ... ok
+test_cannot_update_course_to_an_existing_name (test_api.TestCourseView) ... ERROR
+test_create_course_with_invalid_token (test_api.TestCourseView) ... ok
+test_enroll_students_with_invalid_id (test_api.TestCourseView) ... ok
+test_enrolls_students_with_invalid_course_id (test_api.TestCourseView) ... ok
+test_facilitator_or_student_cannot_create_course (test_api.TestCourseView) ... ok
+test_instructor_can_create_course (test_api.TestCourseView) ... ok
+test_instructor_can_delete_courses (test_api.TestCourseView) ... ok
+test_instructor_can_register_students_on_course (test_api.TestCourseView) ... ok
+test_only_students_can_be_enrolled_in_the_course (test_api.TestCourseView) ... ok
+test_student_or_facilitator_cannot_delete_courses (test_api.TestCourseView) ... ok
+test_update_course_name (test_api.TestCourseView) ... ok
+test_whether_a_list_is_entered_to_enroll_students_in_the_course (test_api.TestCourseView) ... ok
+
+======================================================================
+ERROR: test_facilitator_or_instructor_can_view_all_submissions (test_api.TestActivityView)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: submissions_submission.repo
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/test_api.py", line 1322, in test_facilitator_or_instructor_can_view_all_submissions
+    submission1 = self.client.post("/api/activities/1/submissions/", self.submission_data_1, format="json")
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 295, in post
+    response = super().post(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 209, in post
+    return self.generic('POST', path, data, content_type, **extra)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 233, in generic
+    return super().generic(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 473, in generic
+    return self.request(**r)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 285, in request
+    return super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 237, in request
+    request = super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 719, in request
+    self.check_exception(response)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 580, in check_exception
+    raise exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/activities/views.py", line 82, in submitting_activity
+    submission = activity.submissions.create(**data)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/fields/related_descriptors.py", line 677, in create
+    return super(RelatedManager, self.db_manager(db)).create(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/query.py", line 453, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 763, in save_base
+    updated = self._save_table(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 868, in _save_table
+    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 906, in _do_insert
+    return manager._insert(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/query.py", line 1270, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/sql/compiler.py", line 1416, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: submissions_submission.repo
+
+======================================================================
+ERROR: test_if_it_is_not_possible_to_update_activity_to_an_existing_title (test_api.TestActivityView)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: activities_activity.title
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/test_api.py", line 900, in test_if_it_is_not_possible_to_update_activity_to_an_existing_title
+    activity = self.client.put(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 303, in put
+    response = super().put(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 213, in put
+    return self.generic('PUT', path, data, content_type, **extra)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 233, in generic
+    return super().generic(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 473, in generic
+    return self.request(**r)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 285, in request
+    return super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 237, in request
+    request = super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 719, in request
+    self.check_exception(response)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 580, in check_exception
+    raise exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/activities/views.py", line 59, in put
+    activity.save()
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 763, in save_base
+    updated = self._save_table(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 845, in _save_table
+    updated = self._do_update(base_qs, using, pk_val, values, update_fields,
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 899, in _do_update
+    return filtered._update(values) > 0
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/query.py", line 802, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/sql/compiler.py", line 1559, in execute_sql
+    cursor = super().execute_sql(result_type)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: activities_activity.title
+
+======================================================================
+ERROR: test_student_can_view_only_your_submissions (test_api.TestActivityView)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: submissions_submission.repo
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/test_api.py", line 1250, in test_student_can_view_only_your_submissions
+    submission1 = self.client.post("/api/activities/1/submissions/", self.submission_data_1, format="json")
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 295, in post
+    response = super().post(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 209, in post
+    return self.generic('POST', path, data, content_type, **extra)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 233, in generic
+    return super().generic(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 473, in generic
+    return self.request(**r)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 285, in request
+    return super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 237, in request
+    request = super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 719, in request
+    self.check_exception(response)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 580, in check_exception
+    raise exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/activities/views.py", line 82, in submitting_activity
+    submission = activity.submissions.create(**data)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/fields/related_descriptors.py", line 677, in create
+    return super(RelatedManager, self.db_manager(db)).create(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/query.py", line 453, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 763, in save_base
+    updated = self._save_table(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 868, in _save_table
+    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 906, in _do_insert
+    return manager._insert(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/query.py", line 1270, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/sql/compiler.py", line 1416, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: submissions_submission.repo
+
+======================================================================
+ERROR: test_cannot_update_course_to_an_existing_name (test_api.TestCourseView)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.IntegrityError: UNIQUE constraint failed: courses_course.name
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/test_api.py", line 296, in test_cannot_update_course_to_an_existing_name
+    response = self.client.put(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 303, in put
+    response = super().put(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 213, in put
+    return self.generic('PUT', path, data, content_type, **extra)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 233, in generic
+    return super().generic(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 473, in generic
+    return self.request(**r)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 285, in request
+    return super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/test.py", line 237, in request
+    request = super().request(**kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 719, in request
+    self.check_exception(response)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/test/client.py", line 580, in check_exception
+    raise exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/courses/views.py", line 63, in put
+    course.save()
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 763, in save_base
+    updated = self._save_table(
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 845, in _save_table
+    updated = self._do_update(base_qs, using, pk_val, values, update_fields,
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/base.py", line 899, in _do_update
+    return filtered._update(values) > 0
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/query.py", line 802, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/sql/compiler.py", line 1559, in execute_sql
+    cursor = super().execute_sql(result_type)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/venv/lib/python3.9/site-packages/django/db/backends/sqlite3/base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.IntegrityError: UNIQUE constraint failed: courses_course.name
+
+======================================================================
+FAIL: test_student_can_submit_an_activity (test_api.TestActivityView)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/charles/q4Kenzie/1_sprint/entregas/kanvas/test_api.py", line 1055, in test_student_can_submit_an_activity
+    self.assertEqual(submission.status_code, 201)
+AssertionError: 200 != 201
+
+----------------------------------------------------------------------
+Ran 35 tests in 9.582s
+
+FAILED (failures=1, errors=4)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
