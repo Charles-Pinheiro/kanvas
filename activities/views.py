@@ -83,4 +83,4 @@ def submitting_activity(request, activity_id=''):
 
     serialized = SubmissionSerializer(submission)
 
-    return Response(serialized.data)
+    return Response(serialized.data, status=status.HTTP_201_CREATED)
